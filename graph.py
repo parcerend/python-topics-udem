@@ -6,6 +6,7 @@
 from queue import Queue, PriorityQueue
 import graphutils
 
+
 class Arc:
     # TODO: Implement arc class
     def __init__(self, weigth, initial_node, final_node):
@@ -42,7 +43,7 @@ class Graph:
 
         deep_first_search_alg(initial_node, callback)
 
-    def breadth_first_search(self, initial_node, goal_node = None):
+    def breadth_first_search(self, initial_node, goal_node=None):
         visited_nodes = graphutils.init_visited_nodes(self.nodes.keys())
         queue = Queue(self.nodes_length)
         queue.put(initial_node)
@@ -64,14 +65,10 @@ class Graph:
 
         return graph_nodes
 
-    def every(self, predicate, arr):
-        for element in arr:
-            if not predicate(element):
-                return False
-        return True
-
-    def dijkstra(self, initial_node, target_node):
+    def dijkstra(self, initial_node):
         visited_nodes = graphutils.init_visited_nodes(self.nodes.keys())
+        previous = graphutils.init_visited_nodes(self.nodes.keys())
+
         # Dijkstra distance
         distance = {}
         for node in self.nodes.keys():
@@ -89,10 +86,30 @@ class Graph:
                     continue
                 new_distance = distance[current_node[0].value] + neighboor[1]
                 if new_distance < distance[neighboor[0].value]:
+                    previous[neighboor[0].value] = current_node
                     distance[neighboor[0].value] = new_distance
                     queue.put((neighboor[0], new_distance))
 
-        return distance
+        return {'distance': distance, 'previous': previous}
+
+    def find_path(self, initial_node, final_node):
+        dijkstra = self.dijkstra(initial_node)
+        print(dijkstra)
+        path = []
+
+        if (dijkstra.get('previous')[final_node.value] != False):
+            queue = Queue()
+            queue.put(dijkstra.get('previous')[final_node.value])
+            while not queue.empty():
+                current = queue.get()
+                print(current[0].value)
+                if current != False:
+                    path.append(current)
+                    queue.put(dijkstra.get('previous')[current[0].value])
+        return path
+
+
+
     # this is awesome to search smallest path in an unweigthed graph
 
     def neighboors(self, node):

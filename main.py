@@ -24,5 +24,6 @@ g1 = Graph(
 # g1.deep_first_search(node_c, print)
 # g1.deep_first_search(node_c, lambda value: print(value ))
 # print(g1.neighboors(node_a))
-print(g1.dijkstra(node_a, node_e))
-print(list(map(lambda node: node.value, g1.breadth_first_search(node_a, node_b))))
+# print(g1.dijkstra(node_a))
+print(g1.find_path(node_a, node_e))
+# print(list(map(lambda node: node.value, g1.breadth_first_search(node_a, node_b))))
