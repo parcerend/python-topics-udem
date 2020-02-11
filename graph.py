@@ -6,7 +6,6 @@
 from queue import Queue, PriorityQueue
 import graphutils
 
-
 class Arc:
     # TODO: Implement arc class
     def __init__(self, weigth, initial_node, final_node):
@@ -43,7 +42,7 @@ class Graph:
 
         deep_first_search_alg(initial_node, callback)
 
-    def breadth_first_search(self, initial_node):
+    def breadth_first_search(self, initial_node, goal_node = None):
         visited_nodes = graphutils.init_visited_nodes(self.nodes.keys())
         queue = Queue(self.nodes_length)
         queue.put(initial_node)
@@ -56,9 +55,12 @@ class Graph:
 
             for neighboor in neighboors:
                 if visited_nodes[neighboor[0].value] == False:
+                    graph_nodes.append(neighboor[0])
                     visited_nodes[neighboor[0].value] = True
                     queue.put(neighboor[0])
-                    graph_nodes.append(neighboor[0])
+
+                    if goal_node is not None and neighboor[0].value == goal_node.value:
+                        return graph_nodes
 
         return graph_nodes
 
