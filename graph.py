@@ -4,8 +4,8 @@
 # edges(arc) could be either directed or indirected
 # Breadth First Search is using queue
 from queue import Queue, PriorityQueue
+from functools import reduce
 import graphutils
-
 
 class Arc:
     # TODO: Implement arc class
@@ -90,25 +90,32 @@ class Graph:
                     distance[neighboor[0].value] = new_distance
                     queue.put((neighboor[0], new_distance))
 
+        # print(previous)
         return {'distance': distance, 'previous': previous}
 
     def find_path(self, initial_node, final_node):
         dijkstra = self.dijkstra(initial_node)
-        print(dijkstra)
         path = []
 
-        if (dijkstra.get('previous')[final_node.value] != False):
-            queue = Queue()
-            queue.put(dijkstra.get('previous')[final_node.value])
-            while not queue.empty():
-                current = queue.get()
-                print(current[0].value)
-                if current != False:
-                    path.append(current)
-                    queue.put(dijkstra.get('previous')[current[0].value])
-        return path
+        if (dijkstra.get('previous')[final_node.value] == False):
+            return path
 
+        queue = Queue()
+        queue.put(dijkstra.get('previous')[final_node.value])
 
+        while not queue.empty():
+            current = queue.get()
+            if current is not False:
+                path.append(current)
+                queue.put(dijkstra.get('previous')[current[0].value])
+        # Put last node
+        current_distance = reduce(lambda acumulated, current, : acumulated + current[1], path, 0)
+        path.insert(0, (final_node, abs(dijkstra.get('distance')[final_node.value] - current_distance)))
+
+        return {
+            'path': list(reversed(path)),
+            'distance': dijkstra.get('distance')[final_node.value]
+        }
 
     # this is awesome to search smallest path in an unweigthed graph
 
