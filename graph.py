@@ -8,7 +8,6 @@ from functools import reduce
 import graphutils
 
 class Arc:
-    # TODO: Implement arc class
     def __init__(self, weigth, initial_node, final_node):
         assert weigth > 0, "Weigth must be greather than 0"
         self.weigth = weigth
@@ -17,13 +16,11 @@ class Arc:
 
 
 class Node:
-    # TODO: Implement node class
     def __init__(self, value):
         self.value = value
 
 
 class Graph:
-    # TODO: Implement graph
     def __init__(self, nodes, arcs):
         self.nodes = graphutils.init_edged_list(nodes, arcs)
         self.nodes_length = len(nodes)
@@ -98,7 +95,7 @@ class Graph:
         path = []
 
         if (dijkstra.get('previous')[final_node.value] == False):
-            return path
+            return {'path': path, 'distance': 10e2000}
 
         queue = Queue()
         queue.put(dijkstra.get('previous')[final_node.value])
@@ -117,7 +114,36 @@ class Graph:
             'distance': dijkstra.get('distance')[final_node.value]
         }
 
-    # this is awesome to search smallest path in an unweigthed graph
+    def is_cyclic(self, initial_node):
+        unvisited_nodes = graphutils.init_visited_nodes(self.nodes)
+        unvisited_nodes[initial_node.value] = True
+        queue = Queue()
+        queue.put(initial_node)
+
+        while not queue.empty():
+            current_node = queue.get()
+            unvisited_nodes[current_node.value] = True
+
+            neighboors = self.neighboors(current_node)
+            for neighboor in neighboors:
+                if unvisited_nodes[neighboor[0].value] == True:
+                    return True
+                queue.put(neighboor[0])
+        return False
+
+    def is_bipartite(self, initial_node):
+        unvisited_nodes = graphutils.init_visited_nodes(self.nodes)
+        queue = Queue()
+        queue.put(initial_node)
+
+        while not queue.empty():
+            current_node = queue.get()
+            unvisited_nodes[current_node.value] = True
+            for neighboor in self.neighboors(current_node):
+                if unvisited_nodes[neighboor[0].value] == False:
+                    queue.put(neighboor[0])
+
+        return len(list(filter(lambda visited: visited == False, unvisited_nodes.values()))) >= 1
 
     def neighboors(self, node):
         return self.nodes[node.value]

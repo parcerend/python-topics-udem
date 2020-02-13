@@ -1,31 +1,52 @@
 from tree import Tree
 from graph import Graph, Node, Arc
 
-node_1 = Node('1')
-node_2 = Node('2')
-node_3 = Node('3')
-node_4 = Node('4')
-node_5 = Node('5')
-node_6 = Node('6')
-node_7 = Node('7')
-node_8 = Node('8')
-node_9 = Node('9')
+node_mail = Node('Mail')
+node_ts = Node('ts')
+node_103 = Node('103')
+node_b3 = Node('b3')
+node_b1 = Node('b1')
+node_c2 = Node('c2')
+node_c1 = Node('c1')
+node_c3 = Node('c3')
+node_b2 = Node('b2')
+node_b4 = Node('b4')
+node_109 = Node('109')
+node_111 = Node('111')
+node_119 = Node('119')
+node_storage = Node('storage')
+node_123 = Node('123')
+node_123r = Node('123r')
+node_125 = Node('125')
 
 g1 = Graph(
-    [node_1, node_2, node_3, node_4, node_5, node_6, node_7, node_8, node_9],
+    [node_mail, node_ts, node_103, node_b3, node_b1, node_c2, node_c1, node_c3, node_b2, node_b4, node_109, node_111, node_119, node_storage, node_123, node_123r, node_125],
     [
-        Arc(1, node_1, node_2),
-        Arc(1, node_1, node_3),
-        Arc(1, node_1, node_4),
-        Arc(1, node_3, node_5),
-        Arc(1, node_3, node_6),
-        Arc(1, node_4, node_7),
-        Arc(1, node_4, node_8),
-        Arc(1, node_8, node_9)
+        Arc(8, node_103, node_ts),
+        Arc(12, node_103, node_109),
+        Arc(4, node_103, node_b3),
+        Arc(6, node_ts, node_mail),
+        Arc(4, node_b3, node_b1),
+        Arc(7, node_b3, node_b4),
+        Arc(3, node_b1, node_c2),
+        Arc(6, node_b1, node_b2),
+        Arc(6, node_c2, node_c3),
+        Arc(4, node_c2, node_c1),
+        Arc(8, node_c1, node_c3),
+        Arc(3, node_b2, node_b4),
+        Arc(7, node_b4, node_109),
+        Arc(4, node_109, node_111),
+        Arc(16, node_109, node_119),
+        Arc(7, node_119, node_storage),
+        Arc(9, node_119, node_123),
+        Arc(4, node_123, node_123r),
+        Arc(4, node_123, node_125),
+        Arc(2, node_b3, node_b2)
     ]
 )
 
-path = g1.find_path(node_1, node_7)
+path = g1.find_path(node_103, node_123r)
+print(path)
 for node in path.get('path'):
-    print(node[0].value, node[1])
-print(f"Final distance {path.get('distance')}")
+    print(node[0].value)
+
